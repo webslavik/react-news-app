@@ -8,13 +8,10 @@ import {
   CardActions,
   CardContent,
   Button,
-  IconButton,
-  Typography,
-  // Menu,
-  // MenuItem,
+  Typography
 } from '@material-ui/core';
 
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import CardMenu from './CardMenu';
 
 const styles = {
   card: {
@@ -36,9 +33,7 @@ function NewsItem(props) {
     <Card className={classes.card}>
       <CardHeader
         action={
-          <IconButton>
-            <MoreVertIcon />
-          </IconButton>
+          <CardMenu />
         }
         title={
           <Typography variant='subtitle2'>
