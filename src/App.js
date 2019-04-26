@@ -1,8 +1,10 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
 
 import { withStyles } from '@material-ui/core/styles';
 import NavBar from './components/NavBar';
-import NewsList from './components/NewsList';
+
+import routes from './router';
 
 const styles = {
   mainContent: {
@@ -15,14 +17,27 @@ function App(props) {
   const { classes } = props;
 
   return (
-    <div className="App">
-      <NavBar />
+    <Router>
+      <div className="App">
+        <NavBar />
 
-      {/* Main content */}
-      <div className={classes.mainContent}>
-        <NewsList />
+        <main className={classes.mainContent}>
+          {routes.map((route, i) => (
+            <Route
+              key={i}
+              path={route.path}
+              exact
+              render={props => (
+                // pass the sub-routes down to keep nesting
+                <route.component {...props} routes={route.routes} />
+              )}
+            />
+          ))}
+
+          
+        </main>
       </div>
-    </div>
+    </Router>
   );
 }
 

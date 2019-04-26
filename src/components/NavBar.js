@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -20,6 +21,9 @@ const styles = {
     marginLeft: -12,
     marginRight: 20,
   },
+  linkColor: {
+    color: '#ffffff',
+  }
 };
 
 function NavBar(props) {
@@ -28,9 +32,11 @@ function NavBar(props) {
   return (
     <AppBar>
       <Toolbar >
-        <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-          <HomeIcon />
-        </IconButton>
+        <Link to='/news' className={classes.linkColor}>
+          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+            <HomeIcon />
+          </IconButton>
+        </Link>
         <div className={classes.grow}></div>
         {/* <Typography variant="h6" color="inherit" className={classes.grow}>
           News

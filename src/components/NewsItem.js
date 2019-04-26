@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles'
@@ -51,7 +52,9 @@ function NewsItem(props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button>Read more...</Button>
+        <Link to='/news/id123456'>
+          <Button>Read more...</Button>
+        </Link>
       </CardActions>
     </Card>
   )
