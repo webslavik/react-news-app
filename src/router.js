@@ -1,19 +1,19 @@
-import News from './pages/News';
-import NewsItem from './pages/NewsItem';
-import NewsEdit from './pages/NewsEdit';
+import NewsPage from './pages/NewsPage';
+import NewsItemPage from './pages/NewsItemPage';
+import NewsEditPage from './pages/NewsEditPage';
 
 const routes = [
   {
     path: '/news',
-    component: News,
+    component: NewsPage,
   },
   {
     path: '/news/:newsId',
-    component: NewsItem
+    component: NewsItemPage,
   },
   {
     path: '/news/:newsId/edit',
-    component: NewsEdit
+    component: NewsEditPage,
   },
 ];
 

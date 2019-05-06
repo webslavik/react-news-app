@@ -17,7 +17,7 @@ import CardMenu from './CardMenu';
 const styles = {
   card: {
     minWidth: 480,
-    marginBottom: 16
+    marginBottom: 16,
   },
   title: {
     fontSize: 14,
