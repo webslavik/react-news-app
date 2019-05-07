@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { deleteNews } from '../store/actions';
 
 import {
   Menu,
@@ -10,7 +12,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const ITEM_HEIGHT = 48;
 
-class cardMenu extends React.Component {
+class CardMenu extends React.Component {
   state = {
     anchorEl: null,
   }
@@ -22,7 +24,16 @@ class cardMenu extends React.Component {
   handleClose = () => {
     this.setState({ anchorEl: null });
   };
+
+  onEdit = () => {
+    console.log('Edit news!');
+    this.setState({ anchorEl: null });
+  }
   
+  onDelete = () => {
+    this.props.onDeleteNews(this.props.newsId);
+    this.setState({ anchorEl: null });
+  }
 
   render() {
     const { anchorEl } = this.state;
@@ -47,12 +58,12 @@ class cardMenu extends React.Component {
           }}>
           <MenuItem 
               key={'edit'} 
-              onClick={this.handleClose}>
+              onClick={this.onEdit}>
               Edit
           </MenuItem>
           <MenuItem 
             key={'delete'} 
-            onClick={this.handleClose}>
+            onClick={this.onDelete}>
             Delete
           </MenuItem>
         </Menu>
@@ -61,4 +72,11 @@ class cardMenu extends React.Component {
   }
 }
 
-export default cardMenu;
+const mapDispatchToProps = dispatch => ({
+  onDeleteNews: id => dispatch(deleteNews(id)),
+});
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(CardMenu);

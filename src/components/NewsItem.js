@@ -31,7 +31,7 @@ function NewsItem({ classes, newsData }) {
     <Card className={classes.card}>
       <CardHeader
         action={
-          <CardMenu />
+          <CardMenu newsId={newsData.id} />
         }
         title={
           <Typography variant='subtitle2'>

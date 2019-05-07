@@ -6,6 +6,13 @@ const initState = [
     createdAt: +new Date(),
     author: 'Jack Jackson'
   },
+  {
+    id: +new Date() + 1,
+    title: 'News for deleting #2',
+    text: 'Delete this shit',
+    createdAt: +new Date(),
+    author: 'Jack Jackson'
+  },
 ];
 
 const news = (state = initState, action) => {
