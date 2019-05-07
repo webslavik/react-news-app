@@ -3,6 +3,11 @@ export const addNews = news => ({
   news,
 });
 
+export const editNews = newsId => ({
+  type: 'EDIT_NEWS',
+  newsId,
+});
+
 export const deleteNews = newsId => ({
   type: 'DELETE_NEWS',
   newsId,

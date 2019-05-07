@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { deleteNews } from '../store/actions';
 
 import {
@@ -15,6 +16,7 @@ const ITEM_HEIGHT = 48;
 class CardMenu extends React.Component {
   state = {
     anchorEl: null,
+    toEdit: false,
   }
 
   handleClick = event => {
@@ -26,8 +28,9 @@ class CardMenu extends React.Component {
   };
 
   onEdit = () => {
-    console.log('Edit news!');
-    this.setState({ anchorEl: null });
+    // console.log('move to edit page!', this.props.history);
+    // this.props.onEditNews(this.props.newsId);
+    this.setState({ anchorEl: null, toEdit: true });
   }
   
   onDelete = () => {
@@ -38,6 +41,12 @@ class CardMenu extends React.Component {
   render() {
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
+
+    if (this.state.toEdit === true) {
+      return <Redirect to={{
+        pathname: `/news/${this.props.newsId}/edit`,
+      }}/>
+    }
 
     return (
       <div>
