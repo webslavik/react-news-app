@@ -1,7 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles'
 import {
   Card,
@@ -27,9 +26,7 @@ const styles = {
   },
 };
 
-function NewsItem(props) {
-  const { classes } = props;
-
+function NewsItem({ classes, newsData }) {
   return (
     <Card className={classes.card}>
       <CardHeader
@@ -38,17 +35,21 @@ function NewsItem(props) {
         }
         title={
           <Typography variant='subtitle2'>
-            Don Cheadle
+            {newsData.author}
           </Typography>
         }
-        subheader="September 14, 2016"
+        subheader={
+          <div>
+            {newsData.createdAt}
+          </div>
+        }
       />
       <CardContent>
         <Typography variant='h5'>
-          Iron Man dead!
+          {newsData.title}
         </Typography>
         <Typography>
-          card text (max 200 characters)
+          {newsData.text}
         </Typography>
       </CardContent>
       <CardActions>
@@ -62,6 +63,7 @@ function NewsItem(props) {
 
 NewsItem.propTypes = {
   classes: PropTypes.object.isRequired,
+
 }
 
 export default withStyles(styles)(NewsItem);
