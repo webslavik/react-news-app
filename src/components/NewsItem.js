@@ -10,6 +10,7 @@ import {
   Button,
   Typography
 } from '@material-ui/core';
+import { cutText } from '../helpers';
 
 import CardMenu from './CardMenu';
 
@@ -49,14 +50,14 @@ function NewsItem({ classes, newsData }) {
           {newsData.title}
         </Typography>
         <Typography>
-          {newsData.text}
+          {cutText(newsData.text)}
         </Typography>
       </CardContent>
       <CardActions>
         <Link to={{
           pathname: `/news/${newsData.id}`,
         }}>
-          <Button>Read more...</Button>
+          <Button>Read more</Button>
         </Link>
       </CardActions>
     </Card>
