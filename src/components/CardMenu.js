@@ -17,6 +17,7 @@ class CardMenu extends React.Component {
   state = {
     anchorEl: null,
     toEdit: false,
+    toHome: false,
   }
 
   handleClick = event => {
@@ -35,7 +36,7 @@ class CardMenu extends React.Component {
   
   onDelete = () => {
     this.props.onDeleteNews(this.props.newsId);
-    this.setState({ anchorEl: null });
+    this.setState({ anchorEl: null, toHome: true });
   }
 
   render() {
@@ -46,6 +47,10 @@ class CardMenu extends React.Component {
       return <Redirect to={{
         pathname: `/news/${this.props.newsId}/edit`,
       }}/>
+    }
+
+    if (this.state.toHome === true) {
+      return <Redirect to='/news' />
     }
 
     return (

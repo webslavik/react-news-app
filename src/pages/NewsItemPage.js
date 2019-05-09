@@ -61,7 +61,7 @@ class NewsItem extends React.Component {
           <Card className={classes.card}>
             <CardHeader 
               action={
-                <CardMenu />
+                <CardMenu newsId={this.props.match.params.newsId} />
               }
               title={
                 <Typography variant='subtitle2'>
