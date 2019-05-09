@@ -8,9 +8,9 @@ export const getNews = newsId => ({
   newsId,
 });
 
-export const editNews = newsId => ({
+export const editNews = news => ({
   type: 'EDIT_NEWS',
-  newsId,
+  news,
 });
 
 export const deleteNews = newsId => ({
