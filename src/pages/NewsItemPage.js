@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import {
   Grid,
@@ -12,7 +12,7 @@ import {
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-import { getNews } from '../store/actions';
+import { getNews, deleteNews } from '../store/actions';
 import CardMenu from '../components/CardMenu';
 import store from '../store';
 
@@ -27,7 +27,8 @@ const styles = {
 
 class NewsItem extends React.Component {
   state = {
-    newsData: null
+    newsData: null,
+    toHome: false,
   }
 
   constructor(props) {
@@ -39,10 +40,20 @@ class NewsItem extends React.Component {
     const foundedNews = news.filter(news => news.id === +newsId);
     
     this.state.newsData = foundedNews[0];
-  } 
+  }
+
+  onDelete() {
+    const newsId = this.props.match.params.newsId;
+    this.props.onDeleteNews(newsId);
+    this.setState({ toHome: true });
+  }
 
   render() {
     const { classes } = this.props;
+
+    if (this.state.toHome === true) {
+      return <Redirect to='/news' />
+    }
 
     return (
       <Grid container justify='center'>
@@ -84,7 +95,12 @@ class NewsItem extends React.Component {
                 Edit
               </Button>
             </Link>
-            <Button variant='contained' color='secondary'>Delete</Button>
+            <Button 
+              variant='contained' 
+              color='secondary' 
+              onClick={this.onDelete.bind(this)}>
+              Delete
+            </Button>
           </div>
         </Grid>
       </Grid>
@@ -94,6 +110,7 @@ class NewsItem extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
   onGetNewsData: id => dispatch(getNews(id)),
+  onDeleteNews: id => dispatch(deleteNews(id)),
 });
 
 

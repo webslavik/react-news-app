@@ -34,7 +34,7 @@ const news = (state = initState, action) => {
     case 'EDIT_NEWS':
       return state;
     case 'DELETE_NEWS':
-      return state.filter(news => news.id !== action.newsId);
+      return state.filter(news => news.id !== +action.newsId);
     default:
       return state;
   }
