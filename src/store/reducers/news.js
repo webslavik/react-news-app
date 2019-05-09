@@ -1,17 +1,17 @@
 const initState = [
   {
-    id: +new Date(),
+    id: 1,
     title: 'News #1',
     text: 'Super news for all...',
     createdAt: +new Date(),
     author: 'Jack Jackson'
   },
   {
-    id: +new Date() + 1,
+    id: 2,
     title: 'News for deleting #2',
     text: 'Delete this shit',
     createdAt: +new Date(),
-    author: 'Jack Jackson'
+    author: 'Bob Tall'
   },
 ];
 
@@ -28,6 +28,9 @@ const news = (state = initState, action) => {
           author: 'Jack Jackson'
         }
       ];
+    case 'GET_NEWS':
+      return true
+      // return state.filter(news => news.id === action.newsId);
     case 'EDIT_NEWS':
       return state;
     case 'DELETE_NEWS':

@@ -1,15 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
-import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
 import NavBar from './components/NavBar';
-
 import routes from './router';
-import rootReducer from './store/reducers';
+import store from './store';
 
-const store = createStore(rootReducer);
 
 const styles = {
   mainContent: {

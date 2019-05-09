@@ -53,7 +53,9 @@ function NewsItem({ classes, newsData }) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Link to='/news/id123456'>
+        <Link to={{
+          pathname: `/news/${newsData.id}`,
+        }}>
           <Button>Read more...</Button>
         </Link>
       </CardActions>
