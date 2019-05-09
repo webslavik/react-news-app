@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import Moment from 'react-moment';
 import {
   Grid,
   Card,
@@ -9,8 +12,6 @@ import {
   Typography,
   Button,
 } from '@material-ui/core';
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
 
 import { getNews, deleteNews } from '../store/actions';
 import CardMenu from '../components/CardMenu';
@@ -69,9 +70,9 @@ class NewsItem extends React.Component {
                 </Typography>
               }
               subheader={
-                <div>
+                <Moment format='YYYY/MM/DD'>
                   {this.state.newsData.createdAt}
-                </div>
+                </Moment>
               }
             />
             <CardContent>

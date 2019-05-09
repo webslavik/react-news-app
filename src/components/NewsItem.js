@@ -10,6 +10,7 @@ import {
   Button,
   Typography
 } from '@material-ui/core';
+import Moment from 'react-moment';
 import { cutText } from '../helpers';
 
 import CardMenu from './CardMenu';
@@ -40,9 +41,9 @@ function NewsItem({ classes, newsData }) {
           </Typography>
         }
         subheader={
-          <div>
+          <Moment format='YYYY/MM/DD'>
             {newsData.createdAt}
-          </div>
+          </Moment>
         }
       />
       <CardContent>
