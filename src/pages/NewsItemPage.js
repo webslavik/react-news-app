@@ -74,7 +74,9 @@ class NewsItem extends React.Component {
           </Card>
 
           <div>
-            <Link to='/news/id123456/edit'>
+            <Link to={{
+              pathname: `/news/${this.state.newsData.id}/edit`
+            }}>
               <Button 
                 variant='contained' 
                 color="primary" 
