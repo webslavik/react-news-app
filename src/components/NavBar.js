@@ -53,11 +53,10 @@ class NavBar extends React.Component {
   }
 
   onLogin = async response => {
-    console.log('response:', response);
-
     try {
       const { profileObj, tokenId } = response;
       const token = await getGoogleToken(tokenId);
+      console.log('Token:', token);
 
       this.props.setUserData({
         userName: profileObj.name,

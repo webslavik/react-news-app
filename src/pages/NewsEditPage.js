@@ -10,8 +10,7 @@ import {
   Button,
   TextField
 } from '@material-ui/core';
-import store from '../store';
-import { editNews } from '../store/actions';
+import { getNewsData, updateNewsData } from '../api';
 
 const styles = {
   card: {
@@ -28,9 +27,8 @@ const styles = {
 
 class NewsEdit extends React.Component {
   state = {
-    newsId: null,
-    newsTitle: '',
-    newsText: '',
+    title: '',
+    content: '',
     toNews: false,
   }
 
@@ -40,38 +38,45 @@ class NewsEdit extends React.Component {
     this.onSave = this.onSave.bind(this);
     this.onCancel = this.onCancel.bind(this);
 
-    const newsId = this.props.match.params.newsId;
-
-    const news = store.getState().news;
-    const foundedNews = news.filter(news => news.id === +newsId);
-    
-    this.state.newsId = newsId;
-    this.state.newsTitle = foundedNews[0].title;
-    this.state.newsText = foundedNews[0].text;
+    this.state.newsId = this.props.match.params.newsId;
   }
 
-  handleChangeTitle = event => {
+  handleChangeTitle = (event) => {
     event.persist();
-    this.setState({ newsTitle: event.target.value });
+    this.setState({ title: event.target.value });
   }
-  handleChangeText = event => {
+  handleChangeContent = (event) => {
     event.persist();
-    this.setState({ newsText: event.target.value });
+    this.setState({ content: event.target.value });
   }
 
-  onSave() {
+  async onSave() {
     const news = {
-      id: +this.state.newsId,
-      title: this.state.newsTitle,
-      text: this.state.newsText,
+      token: this.state.token,
+      id: this.state.newsId,
+      title: this.state.title,
+      content: this.state.content,
     };
-    
-    this.props.onEditNews(news);
-    this.setState({ toNews: true });
+
+    try {
+      await updateNewsData(news);
+      this.setState({ toNews: true });
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   onCancel() {
     this.setState({ toNews: true });
+  }
+
+  async fetchNewsData() {
+    const { title, content } = await getNewsData(this.state.newsId);
+    this.setState({ title, content });
+  }
+
+  componentDidMount() {
+    this.fetchNewsData();
   }
 
   render() {
@@ -90,54 +95,57 @@ class NewsEdit extends React.Component {
             <CardContent>
               <form>
                 <TextField
+                  disabled={!this.props.token}
                   ref='newsTitle'
                   id="title-input"
                   className={classes.field}
                   placeholder='Title'
-                  value={this.state.newsTitle}
+                  value={this.state.title}
                   onChange={this.handleChangeTitle}
                 />
                 <TextField
+                  disabled={!this.props.token}
                   ref='newsText'
                   className={classes.field}
                   placeholder='Text'
                   rows='8'
                   multiline={true}
-                  value={this.state.newsText}
-                  onChange={this.handleChangeText}
+                  value={this.state.content}
+                  onChange={this.handleChangeContent}
                 />
               </form>
             </CardContent>
           </Card>
 
-          <div>
-            <Button 
-              className={classes.btnSave}
-              variant='contained' 
-              color="primary"
-              onClick={this.onSave}>
-              Save
-            </Button>
-            <Button 
-              variant='contained' 
-              color='secondary'
-              onClick={this.onCancel}>
-              Cancel
-            </Button>
-          </div>
+          {this.props.token &&
+            <div>
+                <Button 
+                  className={classes.btnSave}
+                  variant='contained' 
+                  color="primary"
+                  onClick={this.onSave}>
+                  Save
+                </Button>
+              <Button 
+                variant='contained' 
+                color='secondary'
+                onClick={this.onCancel}>
+                Cancel
+              </Button>
+            </div>
+          }
         </Grid>
       </Grid>
     );
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  onEditNews: news => dispatch(editNews(news)),
+
+const mapStateToProps = state => ({
+  token: state.user.token,
 });
 
-
-
 export default compose(
-  connect(null, mapDispatchToProps),
+  connect(mapStateToProps),
   withStyles(styles),
 )(NewsEdit);

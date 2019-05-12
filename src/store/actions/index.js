@@ -16,11 +16,6 @@ export const getNews = newsId => ({
   newsId,
 });
 
-export const editNews = news => ({
-  type: 'EDIT_NEWS',
-  news,
-});
-
 export const deleteNews = newsId => ({
   type: 'DELETE_NEWS',
   newsId,

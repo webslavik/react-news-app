@@ -28,3 +28,18 @@ export const getNewsData = async (id) => {
     console.log(err)
   }
 }
+
+export const updateNewsData = async ({ token, id, title, content}) => {
+  try {
+    const config = {
+      headers: {
+        'x-access-token': token,
+      }
+    }
+
+    const { data } = await axios.put(`${urlAPI}/feeds/${id}`, { title, content }, config);
+    return data.feed;
+  } catch (err) {
+    console.log(err)
+  }
+}
