@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
@@ -11,8 +13,10 @@ import {
   IconButton,
 } from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
-
-const clientId = '30451489230-rj4nv9du38qfu043v9use2m8ct3b38su.apps.googleusercontent.com';
+import { getGoogleToken } from '../api';
+import config from '../config';
+import store from '../store';
+import { setUser, clearUserData } from '../store/actions';
 
 const styles = {
   root: {
@@ -43,35 +47,49 @@ const styles = {
 
 class NavBar extends React.Component {
   state = {
-    isLogin: false,
     userName: null,
     userAvatar: null,
+    token: null,
   }
 
-  onLogin = response => {
-    const { profileObj } = response;
-
-    this.setState({ 
-      isLogin: true,
-      userName: profileObj.name,
-      userAvatar: profileObj.imageUrl
-    });
-
+  onLogin = async response => {
     console.log('response:', response);
+
+    try {
+      const { profileObj, tokenId } = response;
+      const token = await getGoogleToken(tokenId);
+
+      this.props.setUserData({
+        userName: profileObj.name,
+        userAvatar: profileObj.imageUrl,
+        token,
+      });
+
+      const { user } = store.getState();
+
+      this.setState({
+        userName: user.userName,
+        userAvatar: user.userAvatar,
+        token: user.token,
+      });
+    } catch (err) {
+      console.log(err)
+    }
   }
   
   onLogout = () => {
+    this.props.clearUserData();
+
     this.setState({ 
-      isLogin: false,
       userName: null,
       userAvatar: null,
+      token: null,
     });
   }
 
   onError = response => {
     console.error('error:', response);
   }
-
 
   render() {
     const { classes } = this.props;
@@ -86,16 +104,16 @@ class NavBar extends React.Component {
           </Link>
           <div className={classes.grow}></div>
 
-          {!this.state.isLogin &&   
+          {!this.state.token &&   
             <GoogleLogin
-              clientId={clientId}
+              clientId={config.clientId}
               onSuccess={this.onLogin}
               onFailure={this.onError}>
               Log in 
             </GoogleLogin>
           }
 
-          {this.state.isLogin &&
+          {this.state.token &&
             <div className={classes.userElements}>
               <Typography 
                 variant="subtitle2" 
@@ -122,4 +140,13 @@ NavBar.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(NavBar);
+
+const mapDispatchToProps = dispatch => ({
+  setUserData: user => dispatch(setUser(user)),
+  clearUserData: () => dispatch(clearUserData()),
+});
+
+export default compose(
+  connect(null, mapDispatchToProps),
+  withStyles(styles),
+)(NavBar);
