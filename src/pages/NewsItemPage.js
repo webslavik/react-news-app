@@ -15,7 +15,7 @@ import {
 
 import { getNews, deleteNews } from '../store/actions';
 import CardMenu from '../components/CardMenu';
-import store from '../store';
+import { getNewsData } from '../api';
 
 const styles = {
   card: {
@@ -30,23 +30,27 @@ class NewsItem extends React.Component {
   state = {
     newsData: null,
     toHome: false,
+    newsId: null,
   }
 
   constructor(props) {
     super(props);
-
-    const newsId = this.props.match.params.newsId;
-
-    const news = store.getState().news;
-    const foundedNews = news.filter(news => news.id === +newsId);
-    
-    this.state.newsData = foundedNews[0];
+    this.state.newsId = this.props.match.params.newsId;
   }
 
   onDelete() {
     const newsId = this.props.match.params.newsId;
     this.props.onDeleteNews(newsId);
     this.setState({ toHome: true });
+  }
+
+  async fetchNewsData() {
+    const newsData = await getNewsData(this.state.newsId);
+    this.setState({ newsData });
+  }
+ 
+  componentDidMount() {
+    this.fetchNewsData();
   }
 
   render() {
@@ -62,32 +66,32 @@ class NewsItem extends React.Component {
           <Card className={classes.card}>
             <CardHeader 
               action={
-                <CardMenu newsId={this.props.match.params.newsId} />
+                <CardMenu newsId={this.state.newsId} />
               }
               title={
                 <Typography variant='subtitle2'>
-                  {this.state.newsData.author}
+                  {this.state.newsData && this.state.newsData.creator.displayName}
                 </Typography>
               }
               subheader={
                 <Moment format='YYYY/MM/DD'>
-                  {this.state.newsData.createdAt}
+                  {this.state.newsData && this.state.newsData.createDate}
                 </Moment>
               }
             />
             <CardContent>
               <Typography variant='h5'>
-                {this.state.newsData.title}
+                {this.state.newsData && this.state.newsData.title}
               </Typography>
               <Typography>
-              {this.state.newsData.text}
+                {this.state.newsData && this.state.newsData.content}
               </Typography>
             </CardContent>
           </Card>
 
           <div>
             <Link to={{
-              pathname: `/news/${this.state.newsData.id}/edit`
+              pathname: `/news/${this.state.newsId}/edit`
             }}>
               <Button 
                 variant='contained' 

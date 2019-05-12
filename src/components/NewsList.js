@@ -11,7 +11,7 @@ function NewsList({ allNews }) {
     <Grid container alignContent='center' direction='column'>
       <Grid item xs={4}>
         {allNews.map(news => 
-          <NewsItem key={news.id} newsData={news} />
+          <NewsItem key={news._id} newsData={news} />
         )}
       </Grid>
     </Grid>

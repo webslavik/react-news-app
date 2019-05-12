@@ -33,16 +33,16 @@ function NewsItem({ classes, newsData }) {
     <Card className={classes.card}>
       <CardHeader
         action={
-          <CardMenu newsId={newsData.id} />
+          <CardMenu newsId={newsData._id} />
         }
         title={
           <Typography variant='subtitle2'>
-            {newsData.author}
+            {newsData.creator.displayName}
           </Typography>
         }
         subheader={
           <Moment format='YYYY/MM/DD'>
-            {newsData.createdAt}
+            {newsData.createDate}
           </Moment>
         }
       />
@@ -51,12 +51,12 @@ function NewsItem({ classes, newsData }) {
           {newsData.title}
         </Typography>
         <Typography>
-          {cutText(newsData.text)}
+          {cutText(newsData.content)}
         </Typography>
       </CardContent>
       <CardActions>
         <Link to={{
-          pathname: `/news/${newsData.id}`,
+          pathname: `/news/${newsData._id}`,
         }}>
           <Button>Read more</Button>
         </Link>
