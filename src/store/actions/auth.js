@@ -19,6 +19,8 @@ export const loginUser = ({ user, googleToken }) => {
     try {
       const token = await api.getAuthToken(googleToken);
 
+      console.log('Auth token:', token);
+
       dispatch(loginUserAction({ 
         token,
         name: user.name,

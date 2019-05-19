@@ -40,7 +40,7 @@ class NewsItem extends React.Component {
           action={
             <div>
               {token && 
-                <CardMenu newsId={newsData._id} />
+                <CardMenu newsId={newsData._id} page='news' />
               }
             </div>
           }

@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core';
 
 import CardMenu from '../components/CardMenu';
-import { getNewsData } from '../api';
+import { deleteNews } from '../store/actions';;
 
 const styles = {
   card: {
@@ -28,7 +28,7 @@ const styles = {
 class NewsItem extends React.Component {
   state = {
     newsData: null,
-    toHome: false,
+    toNews: false,
     newsId: null,
   }
 
@@ -38,19 +38,16 @@ class NewsItem extends React.Component {
   }
 
   async onDelete() {
-    const { token } = this.props;
+    const { dispatch, token } = this.props;
+    const newsId = this.state.newsId
 
-    const data = {
-      token,
-      id: this.state.newsId,
-    }
-
-    console.log('Delete:', data);
+    dispatch(deleteNews({ newsId, token }));
+    this.setState({ toNews: true });
   }
 
   async fetchNewsData() {
-    const newsData = await getNewsData(this.state.newsId);
-    this.setState({ newsData });
+    // const newsData = await getNewsData(this.state.newsId);
+    // this.setState({ newsData });
   }
  
   componentDidMount() {
@@ -60,7 +57,7 @@ class NewsItem extends React.Component {
   render() {
     const { classes, token } = this.props;
 
-    if (this.state.toHome === true) {
+    if (this.state.toNews === true) {
       return <Redirect to='/news' />
     }
 

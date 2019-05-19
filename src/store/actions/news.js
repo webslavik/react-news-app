@@ -25,12 +25,10 @@ const deleteNewsAction = (newsId) => ({
   newsId
 });
 
-export const deleteNews = (newsId) => {
-  return async (dispatch, getState) => {
+export const deleteNews = ({ newsId, token }) => {
+  return async (dispatch) => {
     try {
-      const token = getState().user.token;
-
-      await api.deleteNewsAPI({ token, newsId });
+      await api.deleteNews({ newsId, token });
       dispatch(deleteNewsAction(newsId));
     } catch (err) {
       console.log(`[ERROR] Can't delete news!`);

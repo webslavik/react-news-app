@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-
 import {
   Menu,
   MenuItem,
@@ -18,7 +17,7 @@ class CardMenu extends React.Component {
   state = {
     anchorEl: null,
     toEdit: false,
-    toHome: false,
+    toNews: false,
   }
 
   handleClick = event => {
@@ -34,10 +33,15 @@ class CardMenu extends React.Component {
   }
   
   onDelete = () => {
-    const { dispatch, newsId } = this.props;
+    const { dispatch, newsId, token, page } = this.props;
 
-    dispatch(deleteNews(newsId));
-    // this.setState({ anchorEl: null, toHome: true });
+    dispatch(deleteNews({ newsId, token }));
+
+    if (page === 'news') {
+      return;
+    }
+
+    this.setState({ anchorEl: null, toNews: true });
   }
 
   render() {
@@ -50,7 +54,7 @@ class CardMenu extends React.Component {
       }}/>
     }
 
-    if (this.state.toHome === true) {
+    if (this.state.toNews === true) {
       return <Redirect to='/news' />
     }
 
@@ -87,4 +91,10 @@ class CardMenu extends React.Component {
   }
 }
 
-export default connect()(CardMenu);
+const mapStateToProps = state => ({
+  token: state.auth.token,
+});
+
+export default connect(
+  mapStateToProps
+)(CardMenu);
