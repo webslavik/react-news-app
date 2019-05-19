@@ -1,22 +1,19 @@
-const initState = [
-  {
-    id: 1,
-    title: 'News #1',
-    text: 'Super news for all...',
-    createdAt: +new Date(),
-    author: 'Jack Jackson'
-  },
-  {
-    id: 2,
-    title: 'News for deleting #2',
-    text: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,',
-    createdAt: +new Date(),
-    author: 'Bob Tall'
-  },
-];
+import {
+  RECEIVE_NEWS
+} from '../actions';
+
+const initState = {
+  items: [],
+};
 
 const news = (state = initState, action) => {
   switch(action.type) {
+    case RECEIVE_NEWS:
+      return Object.assign({}, state, {
+        items: action.news
+      });
+
+    // old
     case 'ADD_NEWS':
       return [
         ...state,

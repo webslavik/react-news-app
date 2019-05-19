@@ -1,12 +1,28 @@
-export const setUser = user => ({
+import { 
+  RECEIVE_NEWS,
+
+  fetchNews,
+} from './news';
+
+const setUser = user => ({
   type: 'SET_USER',
   user,
 });
-export const clearUserData = () => ({
+const clearUserData = () => ({
   type: 'CLEAE_USER',
 });
 
-export const addNews = news => ({
+const addNews = news => ({
   type: 'ADD_NEWS',
   news,
 });
+
+export {
+  RECEIVE_NEWS,
+  fetchNews,
+
+  // old,
+  setUser,
+  clearUserData,
+  addNews,
+}

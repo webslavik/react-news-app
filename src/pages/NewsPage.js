@@ -1,29 +1,28 @@
 import React from 'react';
-import { getNewsList } from '../api';
+import { connect } from 'react-redux';
+import { fetchNews } from '../store/actions';
 
 import NewsList from '../components/NewsList';
 
 class News extends React.Component {
-  state = {
-    news: [],
-  }
-
-  async fetchNewsList() {
-    const news = await getNewsList();
-    this.setState({ news });
-  }
-
   componentDidMount() {
-    this.fetchNewsList();
+    const { dispatch } = this.props;
+    dispatch(fetchNews());
   }
 
   render() {
+    const { news } = this.props;
+
     return (
-      <NewsList allNews={this.state.news} />
+      <NewsList allNews={news} />
     );
   }
 }
 
+const mapStateToProps = state => ({
+  news: state.news.items
+});
 
-
-export default News;
+export default connect(
+  mapStateToProps
+)(News);
