@@ -1,7 +1,9 @@
 import { 
   RECEIVE_NEWS,
+  DELETE_NEWS,
 
   fetchNews,
+  deleteNews,
 } from './news';
 
 const setUser = user => ({
@@ -19,7 +21,10 @@ const addNews = news => ({
 
 export {
   RECEIVE_NEWS,
+  DELETE_NEWS,
+
   fetchNews,
+  deleteNews,
 
   // old,
   setUser,

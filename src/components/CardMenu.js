@@ -9,6 +9,8 @@ import {
 } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
+import { deleteNews } from '../store/actions';
+
 
 const ITEM_HEIGHT = 48;
 
@@ -32,7 +34,10 @@ class CardMenu extends React.Component {
   }
   
   onDelete = () => {
-    this.setState({ anchorEl: null, toHome: true });
+    const { dispatch, newsId } = this.props;
+
+    dispatch(deleteNews(newsId));
+    // this.setState({ anchorEl: null, toHome: true });
   }
 
   render() {

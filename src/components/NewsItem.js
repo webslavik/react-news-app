@@ -67,7 +67,7 @@ function NewsItem({ classes, newsData }) {
 
 NewsItem.propTypes = {
   classes: PropTypes.object.isRequired,
-
+  newsData: PropTypes.object.isRequired,
 }
 
 export default withStyles(styles)(NewsItem);

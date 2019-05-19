@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchNews } from '../store/actions';
 
@@ -14,10 +15,14 @@ class News extends React.Component {
     const { news } = this.props;
 
     return (
-      <NewsList allNews={news} />
+      <NewsList news={news} />
     );
   }
 }
+
+News.propTypes = {
+  news: PropTypes.array.isRequired
+};
 
 const mapStateToProps = state => ({
   news: state.news.items

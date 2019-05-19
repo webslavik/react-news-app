@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core';
 
 import CardMenu from '../components/CardMenu';
-import { getNewsData, deleteNews } from '../api';
+import { getNewsData } from '../api';
 
 const styles = {
   card: {
@@ -49,7 +49,7 @@ class NewsItem extends React.Component {
         token: this.state.token,
         id: this.state.newsId,
       }
-      await deleteNews(data);
+      // await deleteNews(data);
       this.setState({ toHome: true });
     } catch (err) {
       console.log(err)

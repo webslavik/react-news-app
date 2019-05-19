@@ -11,15 +11,6 @@ export const getGoogleToken = async (token) => {
   }
 }
 
-export const getNewsList = async () => {
-  try {
-    const { data } = await axios.get(`${urlAPI}/feeds`);
-    return data.feeds;
-  } catch (err) {
-    console.log(err)
-  }
-}
-
 export const getNewsData = async (id) => {
   try {
     const { data } = await axios.get(`${urlAPI}/feeds/${id}`);
@@ -44,8 +35,16 @@ export const updateNewsData = async ({ token, id, title, content}) => {
   }
 }
 
-export const deleteNews = async ({ token, id }) => {
-  console.log('Delete news:', token)
+const getNewsList = async () => {
+  try {
+    const { data } = await axios.get(`${urlAPI}/feeds`);
+    return data.feeds;
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+const deleteNews = async ({ token, newsId }) => {
   try {
     const config = {
       headers: {
@@ -53,9 +52,18 @@ export const deleteNews = async ({ token, id }) => {
       }
     }
 
-    const { data } = await axios.delete(`${urlAPI}/feeds/${id}`, config);
+    const { data } = await axios.delete(`${urlAPI}/feeds/${newsId}`, config);
     return data._id;
   } catch (err) {
     console.log(err)
   }
 }
+
+const api = {
+  getNewsList,
+  deleteNews,
+}
+
+export {
+  api
+};
