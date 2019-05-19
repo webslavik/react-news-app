@@ -6,28 +6,21 @@ import {
   deleteNews,
 } from './news';
 
-const setUser = user => ({
-  type: 'SET_USER',
-  user,
-});
-const clearUserData = () => ({
-  type: 'CLEAE_USER',
-});
-
-const addNews = news => ({
-  type: 'ADD_NEWS',
-  news,
-});
+import { 
+  LOGIN_USER,
+  LOGOUT_USER,
+  loginUser,
+  logoutUser 
+} from './auth';
 
 export {
   RECEIVE_NEWS,
   DELETE_NEWS,
+  LOGIN_USER,
+  LOGOUT_USER,
 
   fetchNews,
   deleteNews,
-
-  // old,
-  setUser,
-  clearUserData,
-  addNews,
+  loginUser,
+  logoutUser,
 }

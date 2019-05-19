@@ -13,10 +13,8 @@ import {
   IconButton,
 } from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
-import { getGoogleToken } from '../api';
 import config from '../config';
-import store from '../store';
-import { setUser, clearUserData } from '../store/actions';
+import { loginUser, logoutUser } from '../store/actions';
 
 const styles = {
   root: {
@@ -46,52 +44,23 @@ const styles = {
 
 
 class NavBar extends React.Component {
-  state = {
-    userName: null,
-    userAvatar: null,
-    token: null,
-  }
-
   onLogin = async response => {
-    try {
-      const { profileObj, tokenId } = response;
-      const token = await getGoogleToken(tokenId);
-      console.log('Token:', token);
-
-      this.props.setUserData({
-        userName: profileObj.name,
-        userAvatar: profileObj.imageUrl,
-        token,
-      });
-
-      const { user } = store.getState();
-
-      this.setState({
-        userName: user.userName,
-        userAvatar: user.userAvatar,
-        token: user.token,
-      });
-    } catch (err) {
-      console.log(err)
-    }
+    const { dispatch } = this.props;
+    const { profileObj: user, tokenId: googleToken } = response;
+    dispatch(loginUser({ user, googleToken }));
   }
   
   onLogout = () => {
-    this.props.clearUserData();
-
-    this.setState({ 
-      userName: null,
-      userAvatar: null,
-      token: null,
-    });
+    const { dispatch } = this.props;
+    dispatch(logoutUser());
   }
 
   onError = response => {
-    console.error('error:', response);
+    console.log('[GOOGLE ERROR] Auth error:', response);
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, token, userName, userAvatar } = this.props;
 
     return (
       <AppBar>
@@ -103,7 +72,7 @@ class NavBar extends React.Component {
           </Link>
           <div className={classes.grow}></div>
 
-          {!this.state.token &&   
+          {!token &&   
             <GoogleLogin
               clientId={config.clientId}
               onSuccess={this.onLogin}
@@ -112,17 +81,17 @@ class NavBar extends React.Component {
             </GoogleLogin>
           }
 
-          {this.state.token &&
+          {token &&
             <div className={classes.userElements}>
               <Typography 
                 variant="subtitle2" 
                 color="inherit" 
                 className={classes.userName}>
-                  {this.state.userName}
+                  {userName}
               </Typography>
               <Avatar 
                 alt="avatar" 
-                src={this.state.userAvatar}
+                src={userAvatar}
                 className={classes.userAvatar} />
               <GoogleLogout 
                 buttonText="Log out"
@@ -139,13 +108,13 @@ NavBar.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-
-const mapDispatchToProps = dispatch => ({
-  setUserData: user => dispatch(setUser(user)),
-  clearUserData: () => dispatch(clearUserData()),
+const mapStateToProps = state => ({
+  token: state.auth.token,
+  userName: state.auth.name,
+  userAvatar: state.auth.avatar,
 });
 
 export default compose(
-  connect(null, mapDispatchToProps),
+  connect(mapStateToProps),
   withStyles(styles),
 )(NavBar);

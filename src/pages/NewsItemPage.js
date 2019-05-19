@@ -38,22 +38,14 @@ class NewsItem extends React.Component {
   }
 
   async onDelete() {
+    const { token } = this.props;
+
     const data = {
-      token: this.state.token,
+      token,
       id: this.state.newsId,
     }
-    console.log(data)
-    return;
-    try {
-      const data = {
-        token: this.state.token,
-        id: this.state.newsId,
-      }
-      // await deleteNews(data);
-      this.setState({ toHome: true });
-    } catch (err) {
-      console.log(err)
-    }
+
+    console.log('Delete:', data);
   }
 
   async fetchNewsData() {
@@ -66,7 +58,7 @@ class NewsItem extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, token } = this.props;
 
     if (this.state.toHome === true) {
       return <Redirect to='/news' />
@@ -78,7 +70,11 @@ class NewsItem extends React.Component {
           <Card className={classes.card}>
             <CardHeader 
               action={
-                <CardMenu newsId={this.state.newsId} />
+                <div>
+                  {token && 
+                    <CardMenu newsId={this.state.newsId} />
+                  }
+                </div>
               }
               title={
                 <Typography variant='subtitle2'>
@@ -92,10 +88,6 @@ class NewsItem extends React.Component {
               }
             />
             <CardContent>
-            <div>
-              Token: {this.props.token}
-            </div>
-
               <Typography variant='h5'>
                 {this.state.newsData && this.state.newsData.title}
               </Typography>
@@ -105,7 +97,7 @@ class NewsItem extends React.Component {
             </CardContent>
           </Card>
           
-          {this.props.token && 
+          {token && 
             <div>
               <Link to={{
                 pathname: `/news/${this.state.newsId}/edit`
@@ -132,7 +124,7 @@ class NewsItem extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  token: state.user.token,
+  token: state.auth.token,
 });
 
 export default compose(

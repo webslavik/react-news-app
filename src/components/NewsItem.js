@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles'
 import {
@@ -28,41 +30,49 @@ const styles = {
   },
 };
 
-function NewsItem({ classes, newsData }) {
-  return (
-    <Card className={classes.card}>
-      <CardHeader
-        action={
-          <CardMenu newsId={newsData._id} />
-        }
-        title={
-          <Typography variant='subtitle2'>
-            {newsData.creator.displayName}
+class NewsItem extends React.Component {
+  render() {
+    const { token, newsData, classes } = this.props;
+    
+    return (
+      <Card className={classes.card}>
+        <CardHeader
+          action={
+            <div>
+              {token && 
+                <CardMenu newsId={newsData._id} />
+              }
+            </div>
+          }
+          title={
+            <Typography variant='subtitle2'>
+              {newsData.creator.displayName}
+            </Typography>
+          }
+          subheader={
+            <Moment format='YYYY/MM/DD'>
+              {newsData.createDate}
+            </Moment>
+          }
+        />
+        <CardContent>
+          <Typography variant='h5'>
+            {newsData.title}
           </Typography>
-        }
-        subheader={
-          <Moment format='YYYY/MM/DD'>
-            {newsData.createDate}
-          </Moment>
-        }
-      />
-      <CardContent>
-        <Typography variant='h5'>
-          {newsData.title}
-        </Typography>
-        <Typography>
-          {cutText(newsData.content)}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Link to={{
-          pathname: `/news/${newsData._id}`,
-        }}>
-          <Button>Read more</Button>
-        </Link>
-      </CardActions>
-    </Card>
-  )
+          <Typography>
+            {cutText(newsData.content)}
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <Link to={{
+            pathname: `/news/${newsData._id}`,
+          }}>
+            <Button>Read more</Button>
+          </Link>
+        </CardActions>
+      </Card>
+    )
+  }
 }
 
 NewsItem.propTypes = {
@@ -70,4 +80,11 @@ NewsItem.propTypes = {
   newsData: PropTypes.object.isRequired,
 }
 
-export default withStyles(styles)(NewsItem);
+const mapStateToProps = state => ({
+  token: state.auth.token
+});
+
+export default compose(
+  connect(mapStateToProps),
+  withStyles(styles),
+)(NewsItem);

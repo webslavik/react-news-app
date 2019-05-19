@@ -51,8 +51,10 @@ class NewsEdit extends React.Component {
   }
 
   async onSave() {
+    const { token } = this.props;
+
     const news = {
-      token: this.state.token,
+      token,
       id: this.state.newsId,
       title: this.state.title,
       content: this.state.content,
@@ -95,7 +97,6 @@ class NewsEdit extends React.Component {
             <CardContent>
               <form>
                 <TextField
-                  disabled={!this.props.token}
                   ref='newsTitle'
                   id="title-input"
                   className={classes.field}
@@ -104,7 +105,6 @@ class NewsEdit extends React.Component {
                   onChange={this.handleChangeTitle}
                 />
                 <TextField
-                  disabled={!this.props.token}
                   ref='newsText'
                   className={classes.field}
                   placeholder='Text'
@@ -116,24 +116,21 @@ class NewsEdit extends React.Component {
               </form>
             </CardContent>
           </Card>
-
-          {this.props.token &&
-            <div>
-                <Button 
-                  className={classes.btnSave}
-                  variant='contained' 
-                  color="primary"
-                  onClick={this.onSave}>
-                  Save
-                </Button>
+          <div>
               <Button 
+                className={classes.btnSave}
                 variant='contained' 
-                color='secondary'
-                onClick={this.onCancel}>
-                Cancel
+                color="primary"
+                onClick={this.onSave}>
+                Save
               </Button>
-            </div>
-          }
+            <Button 
+              variant='contained' 
+              color='secondary'
+              onClick={this.onCancel}>
+              Cancel
+            </Button>
+          </div>
         </Grid>
       </Grid>
     );
@@ -142,7 +139,7 @@ class NewsEdit extends React.Component {
 
 
 const mapStateToProps = state => ({
-  token: state.user.token,
+  token: state.auth.token,
 });
 
 export default compose(
