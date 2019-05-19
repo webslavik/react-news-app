@@ -7,12 +7,17 @@ const initState = {
 const user = (state = initState, action) => {
   switch(action.type) {
     case 'SET_USER':
-      state.userName = action.user.userName;
-      state.userAvatar = action.user.userAvatar;
-      state.token = action.user.token;
-      return state;
+      return Object.assign({}, state, {
+        userName: action.user.userName,
+        userAvatar: action.user.userAvatar,
+        token: action.user.token,
+      });
     case 'CLEAR_USER':
-      return state = initState;
+      return Object.assign({}, state, {
+        userName: null,
+        userAvatar: null,
+        token: null,
+      });
     default:
       return state;
   }

@@ -43,3 +43,19 @@ export const updateNewsData = async ({ token, id, title, content}) => {
     console.log(err)
   }
 }
+
+export const deleteNews = async ({ token, id }) => {
+  console.log('Delete news:', token)
+  try {
+    const config = {
+      headers: {
+        'x-access-token': token,
+      }
+    }
+
+    const { data } = await axios.delete(`${urlAPI}/feeds/${id}`, config);
+    return data._id;
+  } catch (err) {
+    console.log(err)
+  }
+}

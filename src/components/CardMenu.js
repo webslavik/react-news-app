@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { deleteNews } from '../store/actions';
 
 import {
   Menu,
@@ -29,13 +28,10 @@ class CardMenu extends React.Component {
   };
 
   onEdit = () => {
-    // console.log('move to edit page!', this.props.history);
-    // this.props.onEditNews(this.props.newsId);
     this.setState({ anchorEl: null, toEdit: true });
   }
   
   onDelete = () => {
-    this.props.onDeleteNews(this.props.newsId);
     this.setState({ anchorEl: null, toHome: true });
   }
 
@@ -86,11 +82,4 @@ class CardMenu extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  onDeleteNews: id => dispatch(deleteNews(id)),
-});
-
-export default connect(
-  null,
-  mapDispatchToProps,
-)(CardMenu);
+export default connect()(CardMenu);

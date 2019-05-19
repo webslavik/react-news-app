@@ -13,9 +13,8 @@ import {
   Button,
 } from '@material-ui/core';
 
-import { getNews, deleteNews } from '../store/actions';
 import CardMenu from '../components/CardMenu';
-import { getNewsData } from '../api';
+import { getNewsData, deleteNews } from '../api';
 
 const styles = {
   card: {
@@ -38,10 +37,23 @@ class NewsItem extends React.Component {
     this.state.newsId = this.props.match.params.newsId;
   }
 
-  onDelete() {
-    const newsId = this.props.match.params.newsId;
-    this.props.onDeleteNews(newsId);
-    this.setState({ toHome: true });
+  async onDelete() {
+    const data = {
+      token: this.state.token,
+      id: this.state.newsId,
+    }
+    console.log(data)
+    return;
+    try {
+      const data = {
+        token: this.state.token,
+        id: this.state.newsId,
+      }
+      await deleteNews(data);
+      this.setState({ toHome: true });
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   async fetchNewsData() {
@@ -80,6 +92,10 @@ class NewsItem extends React.Component {
               }
             />
             <CardContent>
+            <div>
+              Token: {this.props.token}
+            </div>
+
               <Typography variant='h5'>
                 {this.state.newsData && this.state.newsData.title}
               </Typography>
@@ -88,38 +104,38 @@ class NewsItem extends React.Component {
               </Typography>
             </CardContent>
           </Card>
-
-          <div>
-            <Link to={{
-              pathname: `/news/${this.state.newsId}/edit`
-            }}>
+          
+          {this.props.token && 
+            <div>
+              <Link to={{
+                pathname: `/news/${this.state.newsId}/edit`
+              }}>
+                <Button 
+                  variant='contained' 
+                  color="primary" 
+                  className={classes.btnEdit}>
+                  Edit
+                </Button>
+              </Link>
               <Button 
                 variant='contained' 
-                color="primary" 
-                className={classes.btnEdit}>
-                Edit
+                color='secondary' 
+                onClick={this.onDelete.bind(this)}>
+                Delete
               </Button>
-            </Link>
-            <Button 
-              variant='contained' 
-              color='secondary' 
-              onClick={this.onDelete.bind(this)}>
-              Delete
-            </Button>
-          </div>
+            </div>
+          }
         </Grid>
       </Grid>
     );
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  onGetNewsData: id => dispatch(getNews(id)),
-  onDeleteNews: id => dispatch(deleteNews(id)),
+const mapStateToProps = state => ({
+  token: state.user.token,
 });
 
-
 export default compose(
-  connect(null, mapDispatchToProps),
+  connect(mapStateToProps),
   withStyles(styles),
 )(NewsItem);
