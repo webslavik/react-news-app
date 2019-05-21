@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchNews } from '../store/actions';
 
+import { fetchNews } from '../store/actions';
 import NewsList from '../components/NewsList';
 
 class News extends React.Component {

@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core';
 
 import CardMenu from '../components/CardMenu';
-import { deleteNews } from '../store/actions';;
+import { fetchNewsItem, deleteNews } from '../store/actions';;
 
 const styles = {
   card: {
@@ -27,7 +27,6 @@ const styles = {
 
 class NewsItem extends React.Component {
   state = {
-    newsData: null,
     toNews: false,
     newsId: null,
   }
@@ -39,23 +38,21 @@ class NewsItem extends React.Component {
 
   async onDelete() {
     const { dispatch, token } = this.props;
-    const newsId = this.state.newsId
+    const newsId = this.state.newsId;
 
     dispatch(deleteNews({ newsId, token }));
     this.setState({ toNews: true });
   }
 
-  async fetchNewsData() {
-    // const newsData = await getNewsData(this.state.newsId);
-    // this.setState({ newsData });
-  }
- 
   componentDidMount() {
-    this.fetchNewsData();
+    const { dispatch } = this.props;
+    const newsId = this.state.newsId;
+    dispatch(fetchNewsItem(newsId));
   }
 
   render() {
-    const { classes, token } = this.props;
+    const { classes, token, newsData } = this.props;
+    console.log(newsData);
 
     if (this.state.toNews === true) {
       return <Redirect to='/news' />
@@ -75,21 +72,21 @@ class NewsItem extends React.Component {
               }
               title={
                 <Typography variant='subtitle2'>
-                  {this.state.newsData && this.state.newsData.creator.displayName}
+                  {newsData.creator && newsData.creator.displayName}
                 </Typography>
               }
               subheader={
                 <Moment format='YYYY/MM/DD'>
-                  {this.state.newsData && this.state.newsData.createDate}
+                  {newsData && newsData.createDate}
                 </Moment>
               }
             />
             <CardContent>
               <Typography variant='h5'>
-                {this.state.newsData && this.state.newsData.title}
+                {newsData && newsData.title}
               </Typography>
               <Typography>
-                {this.state.newsData && this.state.newsData.content}
+                {newsData && newsData.content}
               </Typography>
             </CardContent>
           </Card>
@@ -122,6 +119,7 @@ class NewsItem extends React.Component {
 
 const mapStateToProps = state => ({
   token: state.auth.token,
+  newsData: state.news.newsItem,
 });
 
 export default compose(

@@ -2,15 +2,6 @@ import axios from 'axios';
 
 const urlAPI = 'http://localhost:5000/api/v1';
 
-export const getNewsData = async (id) => {
-  try {
-    const { data } = await axios.get(`${urlAPI}/feeds/${id}`);
-    return data.feed;
-  } catch (err) {
-    console.log(err)
-  }
-}
-
 export const updateNewsData = async ({ token, id, title, content}) => {
   try {
     const config = {
@@ -45,6 +36,15 @@ const getNewsList = async () => {
   }
 }
 
+const getNewsItem = async (id) => {
+  try {
+    const { data } = await axios.get(`${urlAPI}/feeds/${id}`);
+    return data.feed;
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 const deleteNews = async ({ token, newsId }) => {
   try {
     const config = {
@@ -62,6 +62,7 @@ const deleteNews = async ({ token, newsId }) => {
 
 const api = {
   getNewsList,
+  getNewsItem,
   deleteNews,
   getAuthToken,
 }

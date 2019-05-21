@@ -1,6 +1,7 @@
 import { api } from '../../api';
 
 export const RECEIVE_NEWS = 'RECEIVE_NEWS';
+export const RECEIVE_NEWS_ITEM = 'RECEIVE_NEWS_ITEM';
 export const DELETE_NEWS = 'DELETE_NEWS';
 
 const receiveNews = (news) => ({
@@ -18,6 +19,22 @@ export const fetchNews = () => {
     }
   }
 };
+
+const receiveNewsItem = (newsItem) => ({
+  type: RECEIVE_NEWS_ITEM,
+  newsItem,
+})
+
+export const fetchNewsItem = (newsId) => {
+  return async (dispatch) => {
+    try {
+      const newsItem = await api.getNewsItem(newsId);
+      dispatch(receiveNewsItem(newsItem));
+    } catch (err) {
+      console.log(`[ERROR] Can't fetch news item!`);
+    }
+  }
+}
 
 
 const deleteNewsAction = (newsId) => ({

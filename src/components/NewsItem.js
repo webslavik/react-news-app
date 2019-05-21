@@ -14,7 +14,6 @@ import {
 } from '@material-ui/core';
 import Moment from 'react-moment';
 import { cutText } from '../helpers';
-
 import CardMenu from './CardMenu';
 
 const styles = {

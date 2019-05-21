@@ -1,10 +1,12 @@
 import {
   RECEIVE_NEWS,
+  RECEIVE_NEWS_ITEM,
   DELETE_NEWS,
 } from '../actions';
 
 const initState = {
   items: [],
+  newsItem: {},
 };
 
 const news = (state = initState, action) => {
@@ -13,9 +15,12 @@ const news = (state = initState, action) => {
       return Object.assign({}, state, {
         items: action.news
       });
+    case RECEIVE_NEWS_ITEM:
+      return Object.assign({}, state, {
+        newsItem: action.newsItem
+      });
     case DELETE_NEWS:
       const filteredNews = state.items.filter(item => item._id !== action.newsId);
-
       return Object.assign({}, state, {
         items: filteredNews
       });

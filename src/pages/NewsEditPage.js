@@ -10,7 +10,7 @@ import {
   Button,
   TextField
 } from '@material-ui/core';
-import { getNewsData, updateNewsData } from '../api';
+import { fetchNewsItem } from '../store/actions';;
 
 const styles = {
   card: {
@@ -60,29 +60,27 @@ class NewsEdit extends React.Component {
       content: this.state.content,
     };
 
-    try {
-      await updateNewsData(news);
-      this.setState({ toNews: true });
-    } catch (err) {
-      console.log(err)
-    }
+    console.log('Update:', news);
+    // try {
+    //   await updateNewsData(news);
+    //   this.setState({ toNews: true });
+    // } catch (err) {
+    //   console.log(err)
+    // }
   }
 
   onCancel() {
     this.setState({ toNews: true });
   }
 
-  async fetchNewsData() {
-    const { title, content } = await getNewsData(this.state.newsId);
-    this.setState({ title, content });
-  }
-
   componentDidMount() {
-    this.fetchNewsData();
+    const { dispatch } = this.props;
+    const newsId = this.state.newsId;
+    dispatch(fetchNewsItem(newsId));
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, newsData } = this.props;
 
     if (this.state.toNews === true) {
       return <Redirect to={{
@@ -101,7 +99,7 @@ class NewsEdit extends React.Component {
                   id="title-input"
                   className={classes.field}
                   placeholder='Title'
-                  value={this.state.title}
+                  value={newsData.title}
                   onChange={this.handleChangeTitle}
                 />
                 <TextField
@@ -110,12 +108,14 @@ class NewsEdit extends React.Component {
                   placeholder='Text'
                   rows='8'
                   multiline={true}
-                  value={this.state.content}
+                  value={newsData.content}
                   onChange={this.handleChangeContent}
                 />
               </form>
             </CardContent>
           </Card>
+
+
           <div>
               <Button 
                 className={classes.btnSave}
@@ -140,6 +140,7 @@ class NewsEdit extends React.Component {
 
 const mapStateToProps = state => ({
   token: state.auth.token,
+  newsData: state.news.newsItem,
 });
 
 export default compose(
