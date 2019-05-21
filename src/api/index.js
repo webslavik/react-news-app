@@ -45,13 +45,28 @@ const getNewsItem = async (id) => {
   }
 }
 
+const updateNews = async({ token, newsId, title, content }) => {
+  try {
+    const config = {
+      headers: {
+        'x-access-token': token,
+      }
+    };
+
+    const { data } = await axios.put(`${urlAPI}/feeds/${newsId}`, { title, content }, config);
+    return data.feed;
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 const deleteNews = async ({ token, newsId }) => {
   try {
     const config = {
       headers: {
         'x-access-token': token,
       }
-    }
+    };
 
     const { data } = await axios.delete(`${urlAPI}/feeds/${newsId}`, config);
     return data._id;
@@ -64,6 +79,7 @@ const api = {
   getNewsList,
   getNewsItem,
   deleteNews,
+  updateNews,
   getAuthToken,
 }
 

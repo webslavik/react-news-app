@@ -10,7 +10,7 @@ import {
   Button,
   TextField
 } from '@material-ui/core';
-import { fetchNewsItem } from '../store/actions';;
+import { fetchNewsItem, updateNews } from '../store/actions';;
 
 const styles = {
   card: {
@@ -51,22 +51,16 @@ class NewsEdit extends React.Component {
   }
 
   async onSave() {
-    const { token } = this.props;
+    const { dispatch, token } = this.props;
 
     const news = {
       token,
-      id: this.state.newsId,
+      newsId: this.state.newsId,
       title: this.state.title,
       content: this.state.content,
     };
 
-    console.log('Update:', news);
-    // try {
-    //   await updateNewsData(news);
-    //   this.setState({ toNews: true });
-    // } catch (err) {
-    //   console.log(err)
-    // }
+    dispatch(updateNews(news));
   }
 
   onCancel() {
@@ -79,8 +73,15 @@ class NewsEdit extends React.Component {
     dispatch(fetchNewsItem(newsId));
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      title: nextProps.newsData.title,
+      content: nextProps.newsData.content,
+    });
+  }
+
   render() {
-    const { classes, newsData } = this.props;
+    const { classes } = this.props;
 
     if (this.state.toNews === true) {
       return <Redirect to={{
@@ -99,7 +100,7 @@ class NewsEdit extends React.Component {
                   id="title-input"
                   className={classes.field}
                   placeholder='Title'
-                  value={newsData.title}
+                  value={this.state.title}
                   onChange={this.handleChangeTitle}
                 />
                 <TextField
@@ -108,7 +109,7 @@ class NewsEdit extends React.Component {
                   placeholder='Text'
                   rows='8'
                   multiline={true}
-                  value={newsData.content}
+                  value={this.state.content}
                   onChange={this.handleChangeContent}
                 />
               </form>
