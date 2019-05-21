@@ -8,6 +8,7 @@ import {
 const initState = {
   items: [],
   newsItem: {},
+  isUpdate: false,
 };
 
 const news = (state = initState, action) => {
@@ -21,7 +22,9 @@ const news = (state = initState, action) => {
         newsItem: action.newsItem
       });
     case UPDATE_NEWS:
-      return state;
+      return Object.assign({}, state, {
+        isUpdate: action.news.isUpdate,
+      });
     case DELETE_NEWS:
       const filteredNews = state.items.filter(item => item._id !== action.newsId);
       return Object.assign({}, state, {

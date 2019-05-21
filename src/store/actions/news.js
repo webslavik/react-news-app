@@ -48,8 +48,15 @@ const updateNewsAction = (news) => ({
 export const updateNews = (news) => {
   return async (dispatch) => {
     try {
-      const updatedNews = await api.updateNews(news);
-      dispatch(updateNewsAction(updatedNews));
+      const data = await api.updateNews(news);
+
+      if (data.error) {
+        dispatch(updateNewsAction({ isUpdate: false }));
+        return;
+      }
+
+      console.log('Data?', data);
+      dispatch(updateNewsAction({ isUpdate: true }));
     } catch (err) {
       console.log(`[ERROR] Can't update news!`);
     }

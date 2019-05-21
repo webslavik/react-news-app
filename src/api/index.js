@@ -53,10 +53,11 @@ const updateNews = async({ token, newsId, title, content }) => {
       }
     };
 
-    const { data } = await axios.put(`${urlAPI}/feeds/${newsId}`, { title, content }, config);
-    return data.feed;
+    const response = await axios.put(`${urlAPI}/feeds/${newsId}`, { title, content }, config);
+    return response;
   } catch (err) {
-    console.log(err)
+    console.log(err.response.data)
+    return err.response.data;
   }
 }
 

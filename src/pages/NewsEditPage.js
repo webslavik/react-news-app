@@ -81,9 +81,9 @@ class NewsEdit extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, isUpdate } = this.props;
 
-    if (this.state.toNews === true) {
+    if (this.state.toNews === true || isUpdate === true) {
       return <Redirect to={{
         pathname: `/news/${this.state.newsId}`
       }} />
@@ -142,6 +142,7 @@ class NewsEdit extends React.Component {
 const mapStateToProps = state => ({
   token: state.auth.token,
   newsData: state.news.newsItem,
+  isUpdate: state.news.isUpdate,
 });
 
 export default compose(
