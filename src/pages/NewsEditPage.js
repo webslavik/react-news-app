@@ -81,7 +81,13 @@ class NewsEdit extends React.Component {
   }
 
   render() {
-    const { classes, isUpdate } = this.props;
+    const { classes, isUpdate, token } = this.props;
+
+    if (!token) {
+      return <Redirect to={{
+        pathname: `/news/${this.state.newsId}`
+      }} />
+    }
 
     if (this.state.toNews === true || isUpdate === true) {
       return <Redirect to={{
